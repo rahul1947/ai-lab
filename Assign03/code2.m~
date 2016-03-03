@@ -1,0 +1,30 @@
+format long;
+[v1,v2,class]=textread("ex2data2.txt","%f,%f,%f");
+
+for k= 1:1:2
+	w(k)=0;
+endfor
+
+iter=50;
+for k= 1:1:iter
+	error(k)=0;
+endfor
+
+k=1;alpha=0.05;
+while(k<=iter)
+i=1;
+final1=0;
+while(i<=rows(v1))
+	P=[v1(i),v2(i)];
+	result=w*P';
+	final=class(i)-result;
+	w(1)=w(1)+alpha*(1/rows(v1))*class(i)*(v1(i)/(1+e^(class(i)*result)));
+	w(2)=w(2)+alpha*(1/rows(v1))*class(i)*(v2(i)/(1+e^(class(i)*result)));
+	final1=final1+(final*final);
+	i=i+1;
+endwhile
+error(k)=final1/k;
+k++;
+endwhile
+error;
+plot(error);
